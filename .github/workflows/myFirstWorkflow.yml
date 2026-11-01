@@ -8,6 +8,11 @@ on:
     branches:
       - main
       - dev
+
+env:
+  ENV_TYPE: DEV
+  APP_USER: welpmoz
+  APP_PORT: 80
 jobs:
   job1:
     name: JOB1
@@ -64,3 +69,7 @@ jobs:
           ls -ltr
       #- name: Step for PR Demos
       #  run: exit 1
+      - name: Referring Environment Variables
+        run: |
+          echo "[INFO] Running Deployment for $ENV_TYPE with user $APP_USER"
+          echo "[INFO] Once deployment app location is accessible on port $APP_PORT."
