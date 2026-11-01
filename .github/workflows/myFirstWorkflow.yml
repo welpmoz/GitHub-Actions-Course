@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+      - dev
 jobs:
   job1:
     name: JOB1
@@ -61,5 +62,5 @@ jobs:
         run: |
           pwd
           ls -ltr
-      - name: Step for PR Demos
-        run: exit 1
+      #- name: Step for PR Demos
+      #  run: exit 1
