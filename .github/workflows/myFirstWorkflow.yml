@@ -8,6 +8,11 @@ on:
     branches:
       - main
       - dev
+
+env:
+  ENV_TYPE: DEV
+  APP_USER: welpmoz
+  APP_PORT: 80
 jobs:
   job1:
     name: JOB1
@@ -64,3 +69,45 @@ jobs:
           ls -ltr
       #- name: Step for PR Demos
       #  run: exit 1
+      - name: Referring Environment Variables
+        run: |
+          echo "[INFO] Running Deployment for $ENV_TYPE with user $APP_USER"
+          echo "[INFO] Once deployment app location is accessible on port $APP_PORT."
+      - name: Referring Repository Secrets
+        run: echo "[INFO] Application password is ${{ secrets.ONEPASSWORD_TOKEN }}"
+  job3:
+    name: JOB3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Referring context or built-in variables
+        run: |
+          echo "[INFO] Triggered by ${{ github.event_name }}."
+          echo "[INFO] New changes are added by ${{ github.actor }} in ${{ github.ref_name }} branch."
+          echo "[INFO] Current Step is running on ${{ runner.os }}."
+          echo "[INFO] Current JOB ID is ${{ job.check_run_id }}."
+          echo "[INFO] Current target branch is ${{ github.head_ref }}."
+
+  staging:
+    name: STAGE DEPLOYMENT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Referring Environment Variables
+        run: echo "[INFO] Running deployment on ${{ vars.HOST }} using ${{ vars.USER }}."
+      - name: Referring Environment Secrets
+        run: echo "[INFO] Password for ${{ vars.USER }} is ${{ secrets.PASSWORD }}."
+    environment:
+      name: STAGING
+    if: github.head_ref == 'dev'
+
+  production:
+    name: PRODUCTION DEPLOYMENT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Referring Environment Variables
+        run: echo "[INFO] Running deployment on ${{ vars.HOST }} using ${{ vars.USER }}."
+      - name: Referring Environment Secrets
+        run: echo "[INFO] Password for ${{ vars.USER }} is ${{ secrets.PASSWORD }}."
+    environment:
+      name: PRODUCTION
+    if: github.head_ref == 'main'
+    
